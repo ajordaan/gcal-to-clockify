@@ -1,0 +1,23 @@
+{
+  "name": "calendar-to-clockify",
+  "version": "1.0.0",
+  "description": "Create clockify time entries based on Google Calendar",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "start": "node index.js"
+  },
+  "author": "Andrew Jordaan",
+  "license": "ISC",
+  "dependencies": {
+    "@googleapis/calendar": "^3.0.0",
+    "dotenv": "^16.0.3",
+    "googleapis": "^109.0.1",
+    "got": "^12.5.3",
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
