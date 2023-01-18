@@ -33,25 +33,26 @@ const updateClockify = async (date) => {
     'Daily Standup': 'ceremony',
     'Consumer Review & Planning': 'ceremony',
     'Development': 'development',
-    'Front-End Session': 'development'
+    'Front-End Session': 'development',
+    'Core Planning': 'ceremony',
+    'Howler // Weekly Project Review': 'ceremony'
   }
 
-  const IGNORED_EVENTS = ['Front-End Session']
-
-  const gaps = getGapsInCalendarSchedule(events, workDay)
+  const IGNORED_EVENTS = ['Front-End Session', 'Working']
+  const filteredEvents = events.filter(event => !IGNORED_EVENTS.includes(event.summary))
+  const gaps = getGapsInCalendarSchedule(filteredEvents, workDay)
   const developmentEvents = gaps.map(gap => { return { summary: 'Development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
   events.push(...developmentEvents)
 
   try {
-    events.filter(event => !IGNORED_EVENTS.includes(event.summary)).forEach(event => {
-      console.log({ event: event.summary })
+    filteredEvents.forEach(event => {
       if (EVENT_TYPES[event.summary]) {
         addTimeEntryFor(EVENT_TYPES[event.summary], new Date(event.start.dateTime).toISOString(), new Date(event.end.dateTime).toISOString())
         console.log(`Added a ${EVENT_TYPES[event.summary]} entry for ${event.summary}`)
       }
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 }
