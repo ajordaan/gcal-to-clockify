@@ -1,9 +1,46 @@
 import { calendar, getEvents, getEventsForToday } from './GoogleCalendarAPI.js';
-import { addTimeEntryFor, getTimeEntries } from './ClockifyAPI.js'
-
+import { addTimeEntryFor, getTimeEntries, CLOCKIFY_TASKS } from './ClockifyAPI.js'
+import fs from 'fs'
+import readline from 'readline'
 import { getGapsInCalendarSchedule, currentWorkDay, WORK_DAY_END_TIME, WORK_DAY_START_TIME, title } from './Utils.js'
 
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
+
 import yargs from 'yargs/yargs';
+
+const categoriseUnknownEvents = async (events, event_types) => {
+
+  console.log('categorising events')
+  const taskTypes = Object.keys(CLOCKIFY_TASKS)
+  taskTypes.push('ignore')
+
+  console.log({taskTypes})
+
+  const unknownEvents = events.filter(event => !event_types[event.summary])
+
+  // console.log({unknownEvents})
+
+
+  const categorised = {}
+
+  for (const event of unknownEvents) {
+    console.log(`What type of event is: ${event.summary}`)
+    
+    taskTypes.forEach((task, i) => console.log(`${i+1}. ${task}`) )
+
+    const typeIndex = await prompt("Type: ");
+
+    console.log('selected: ' + typeIndex)
+
+    categorised[event.summary] = taskTypes[typeIndex - 1]
+
+  }
+
+  return categorised
+}
+
+const saveCategorisedEvents = (events) => fs.writeFileSync('config/calendar-event-types.json', JSON.stringify(events))
 
 const updateClockify = async (date) => {
   const targetDate = date
@@ -22,24 +59,28 @@ const updateClockify = async (date) => {
     return
   }
 
-  const events = await getEvents(workDay.start, workDay.end)
+  // const events = await getEvents(workDay.start, workDay.end)
+  const events = JSON.parse(fs.readFileSync('./google-calendar-events-stub.json'))
 
   if (events.length == 0) {
     console.error('No calendar events found');
     return;
   }
 
-  const EVENT_TYPES = {
-    'Daily Standup': 'ceremony',
-    'Consumer Review & Planning': 'ceremony',
-    'Development': 'development',
-    'Front-End Session': 'development',
-    'Core Planning': 'ceremony',
-    'Howler // Weekly Project Review': 'ceremony'
-  }
+  const taskTypes = Object.keys(CLOCKIFY_TASKS).map(task => task.name)
+  taskTypes.push('Ignore')
 
-  const IGNORED_EVENTS = ['Front-End Session', 'Working']
+
+  let EVENT_TYPES = JSON.parse(fs.readFileSync('config/calendar-event-types.json'))
+  const newCategorisedEvents = await categoriseUnknownEvents(events, EVENT_TYPES)
+
+  EVENT_TYPES = {...EVENT_TYPES, ...newCategorisedEvents}
+
+  saveCategorisedEvents(EVENT_TYPES)
+
+  const IGNORED_EVENTS = Object.keys(EVENT_TYPES).filter(eventName => EVENT_TYPES[eventName] === 'ignore')
   const filteredEvents = events.filter(event => !IGNORED_EVENTS.includes(event.summary))
+
   const gaps = getGapsInCalendarSchedule(filteredEvents, workDay)
   const developmentEvents = gaps.map(gap => { return { summary: 'Development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
   events.push(...developmentEvents)
