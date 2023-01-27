@@ -42,8 +42,9 @@ export const getEvents = async (fromTime, untilTime, onlyAcceptedEvents = true) 
     singleEvents: true,
     orderBy: 'startTime',
   });
+
   if(onlyAcceptedEvents) {
-    return eventsRes.data.items.filter(event => event.attendees[0].responseStatus == 'accepted' )
+    return eventsRes.data.items.filter(event => event.attendees?.at(0)?.responseStatus === 'accepted' )
   }
   
   return eventsRes.data.items

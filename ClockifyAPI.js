@@ -35,17 +35,17 @@ export const addTimeEntry = async (task, start, end) => {
       end
     }
   }
-  console.log('added time entry')
-  // const res = await client.post(url, options)
+  const res = await client.post(url, options)
+
+  return res.statusCode
 }
 
 export const getTimeEntries = async (workspaceId, startTime, endTime) => {
 
   const url = `workspaces/${workspaceId}/user/${USER_ID}/time-entries?start=${startTime}&end=${endTime}`
 
-  return []
-  // const res = await client.get(url)
-  // return JSON.parse(res.body)
+  const res = await client.get(url)
+  return JSON.parse(res.body)
 }
 
 export const getTimeEntriesForToday = async (taskId, projectId, workspaceId) => {
