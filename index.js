@@ -20,14 +20,12 @@ const categoriseUnknownEvents = async (events, event_types, taskTypes) => {
 
   const responses = await prompts(categorisedEventQuestions);
 
-  console.log(responses)
-
   return responses
 }
 
 const saveCategorisedEvents = (events) => fs.writeFileSync('config/calendar-event-types.json', JSON.stringify(events))
 
-const timeInHoursMinutes = (date) => `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2,'0')}`
+const timeInHoursMinutes = (date) => `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
 
 const updateClockify = async (date) => {
   const targetDate = date
@@ -61,8 +59,15 @@ const updateClockify = async (date) => {
   const newCategorisedEvents = await categoriseUnknownEvents(events, EVENT_TYPES, taskTypes)
 
   EVENT_TYPES = { ...EVENT_TYPES, ...newCategorisedEvents }
-
-  saveCategorisedEvents(EVENT_TYPES)
+  try {
+    saveCategorisedEvents(EVENT_TYPES)
+    console.log('Updated saved events config')
+  }
+  catch (err) {
+    console.error(err)
+    console.log('Unable to store events. Exiting to avoid events not being uploaded correctly')
+    return;
+  }
 
   const IGNORED_EVENTS = Object.keys(EVENT_TYPES).filter(eventName => EVENT_TYPES[eventName] === 'ignore')
   const filteredEvents = events.filter(event => !IGNORED_EVENTS.includes(event.summary))
@@ -84,7 +89,6 @@ const updateClockify = async (date) => {
   } catch (error) {
     console.error(error)
   }
-
 }
 
 (async () => {
@@ -107,8 +111,6 @@ const updateClockify = async (date) => {
     }
   ]
   const response = await prompts(questions);
-
-  // console.log(response)
 
   switch (response.action) {
     case 'clock-in':
