@@ -77,6 +77,7 @@ const updateClockify = async (date) => {
   try {
     filteredEvents.forEach(event => {
       if (EVENT_TYPES[event.summary]) {
+        // if event is all day maybe just set time to be working hours?
         addTimeEntryFor(EVENT_TYPES[event.summary], new Date(event.start.dateTime).toISOString(), new Date(event.end.dateTime).toISOString())
         console.log(`Added a ${EVENT_TYPES[event.summary]} entry for ${event.summary} (${timeInHoursMinutes(new Date(event.start.dateTime))} - ${timeInHoursMinutes(new Date(event.end.dateTime))})`)
       }
