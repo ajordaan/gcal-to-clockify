@@ -1,7 +1,7 @@
 import fs from 'fs'
 import prompts from 'prompts';
 
-export class ClockifyUpdater {
+export default class ClockifyUpdater {
 
   constructor(date, clockifyProjectId, calendarEvents, previouslyCategorisedEvents, clockifyTaskNames) {
     this.calendarEvents = calendarEvents
@@ -71,7 +71,6 @@ export class ClockifyUpdater {
   }
 
   get workDay() {
-
     return {
       start: new Date(`${targetDate.toISOString().split('T')[0]} ${WORK_DAY_START_TIME}`),
       end: new Date(`${targetDate.toISOString().split('T')[0]} ${WORK_DAY_END_TIME}`)

@@ -1,58 +1,49 @@
-
-import * as dotenv from 'dotenv' 
-dotenv.config()
-
 import { google } from 'googleapis';
-import { currentWorkDay } from './Utils.js';
+import { currentWorkDay, WORK_DAY_START_TIME, WORK_DAY_END_TIME } from './Utils.js';
+export default class GoogleCalendarAPI {
+  constructor(privateKey, clientEmail, projectNumber, calendarId) {
 
-const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY
-const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL
-const GOOGLE_PROJECT_NUMBER = process.env.GOOGLE_PROJECT_NUMBER
-const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID
+    this.SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+    this.GOOGLE_PRIVATE_KEY = privateKey
+    this.GOOGLE_CLIENT_EMAIL = clientEmail
+    this.GOOGLE_PROJECT_NUMBER = projectNumber
+    this.GOOGLE_CALENDAR_ID = calendarId
 
-const DAY_START_TIME = '07:00'
-const DAY_END_TIME = '19:00'
+    this.jwtClient = new google.auth.JWT(
+      this.GOOGLE_CLIENT_EMAIL,
+      null,
+      this.GOOGLE_PRIVATE_KEY,
+      this.SCOPES
+    );
 
-const WORK_DAY_START_TIME = '09:00'
-const WORK_DAY_END_TIME = '17:00'
-
-
-const jwtClient = new google.auth.JWT(
-  GOOGLE_CLIENT_EMAIL,
-  null,
-  GOOGLE_PRIVATE_KEY,
-  SCOPES
-);
-
-export const calendar = google.calendar({
-  version: 'v3',
-  project: GOOGLE_PROJECT_NUMBER,
-  auth: jwtClient
-});
-
-
-export const getEvents = async (fromTime, untilTime, onlyAcceptedEvents = true) => {
-  const eventsRes = await calendar.events.list({
-    calendarId: GOOGLE_CALENDAR_ID,
-    timeMin: fromTime.toISOString(),
-    timeMax: untilTime.toISOString(),
-    maxAttendees: 1,
-    maxResults: 20,
-    singleEvents: true,
-    orderBy: 'startTime',
-  });
-
-  if(onlyAcceptedEvents) {
-    return eventsRes.data.items.filter(event => event.attendees?.at(0)?.responseStatus === 'accepted' )
+    this.calendar = google.calendar({
+      version: 'v3',
+      project: this.GOOGLE_PROJECT_NUMBER,
+      auth: this.jwtClient
+    });
   }
-  
-  return eventsRes.data.items
-}
 
-export const getEventsForToday = (onlyAcceptedEvents = true) => {
 
-  const workDay = currentWorkDay()
+  async getEvents(fromTime, untilTime, onlyAcceptedEvents = true) {
+    const eventsRes = await calendar.events.list({
+      calendarId: this.GOOGLE_CALENDAR_ID,
+      timeMin: fromTime.toISOString(),
+      timeMax: untilTime.toISOString(),
+      maxAttendees: 1,
+      maxResults: 20,
+      singleEvents: true,
+      orderBy: 'startTime',
+    });
 
-  return getEvents(workDay.start, workDay.end, onlyAcceptedEvents)
+    if (onlyAcceptedEvents) {
+      return eventsRes.data.items.filter(event => event.attendees?.at(0)?.responseStatus === 'accepted')
+    }
+
+    return eventsRes.data.items
+  }
+
+  async getEventsForToday(onlyAcceptedEvents = true) {
+    const workDay = currentWorkDay()
+    return getEvents(workDay.start, workDay.end, onlyAcceptedEvents)
+  }
 }

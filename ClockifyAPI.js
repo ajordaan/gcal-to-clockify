@@ -4,22 +4,28 @@ dotenv.config()
 
 import got from 'got';
 
-export class ClockifyAPI {
-  constructor(apiKey, clockifyUserId) {
-    this.clockifyUserId = clockifyUserId
+export default class ClockifyAPI {
+  constructor(apiKey, userId, workspaceId) {
+    this.USER_ID = userId
+    this.WORKSPACE_ID = workspaceId
     this.API_KEY = apiKey
 
     const options = {
       prefixUrl: 'https://api.clockify.me/api/v1',
       headers: {
-        'X-Api-Key': API_KEY
+        'X-Api-Key': this.API_KEY
       },
       timeout: {
         request: 10000
       }
     }
-
     this.client = got.extend(options)
+  }
+
+  async getUserInfo() {
+    const url = `user`
+    const res = await this.client.get(url)
+    return JSON.parse(res)
   }
 
   async addTimeEntry(task, start, end) {
@@ -41,18 +47,28 @@ export class ClockifyAPI {
     return addTimeEntry(CLOCKIFY_TASKS[taskType], start, end)
   }
 
-  async getProjectTasks(workspaceId, projectId) {
-    const url = `/workspaces/${workspaceId}/projects/${projectId}/tasks`
+  async getWorkspaceProjects() {
+    const url = `/workspaces/${this.WORKSPACE_ID}/projects`
 
-    const res = await client.get(url)
-    return JSON.parse(res.body)
+    const res = await this.client.get(url)
+
+    return JSON.parse(res)
+  }
+
+  async getProjectTasks(projectId) {
+    const url = `/workspaces/${this.WORKSPACE_ID}/projects/${projectId}/tasks`
+
+    const res = await this.client.get(url)
+    const tasks = JSON.parse(res.body)
+
+    return tasks.map(task => { return { workspaceId, ...task } })
   }
 
   async getTimeEntries(workspaceId, startTime, endTime) {
 
-    const url = `workspaces/${workspaceId}/user/${this.clockifyUserId}/time-entries?start=${startTime}&end=${endTime}`
+    const url = `workspaces/${workspaceId}/user/${this.USER_ID}/time-entries?start=${startTime}&end=${endTime}`
 
-    const res = await client.get(url)
+    const res = await this.client.get(url)
     return JSON.parse(res.body)
   }
 
@@ -63,8 +79,6 @@ export class ClockifyAPI {
 
     return getTimeEntries(taskId, projectId, workspaceId, startDate, endDate)
   }
-
-  // CLOCKIFY_TASKS = JSON.parse(fs.readFileSync('config/clockify-tasks.json'))
 }
 
 
