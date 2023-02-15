@@ -1,0 +1,270 @@
+[
+  {
+    "kind": "calendar#event",
+    "etag": "\"3348062701180000\"",
+    "id": "f040qhb792il07nchhl6fhg74s_20230118T083000Z",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=ZjA0MHFoYjc5MmlsMDduY2hobDZmaGc3NHNfMjAyMzAxMThUMDgzMDAwWiBhbmRyZXcuam9yZGFhbkBwbGF0Zm9ybTQ1LmNvbQ",
+    "created": "2022-01-04T06:39:41.000Z",
+    "updated": "2023-01-18T08:42:30.590Z",
+    "summary": "Daily Standup",
+    "description": "<html-blob><u></u><u></u><u></u><p><b>Standup Order</b></p><p>1. Kerry</p><p>2. Serisha</p><p>3. Jeremy</p><p>4. Derrick</p><p>5. Thabo</p><p>6. Jaco</p><p>7. Andrea</p><p>8. Andrew</p><p>9. Reeves</p><p>10. JP</p><p>11. Mrinal</p><p>12. Stacey</p><p>13. Jesus</p><p>14. Ivica</p><p>15. Xolani</p><p>16. Leon</p><p>17. Clayton</p><p>18. Sihle</p><u></u><u></u><u></u></html-blob>",
+    "creator": {
+      "email": "kerry.hearn@howler.co.za"
+    },
+    "organizer": {
+      "email": "kerry.hearn@howler.co.za"
+    },
+    "start": {
+      "dateTime": "2023-01-18T10:30:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "end": {
+      "dateTime": "2023-01-18T11:00:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "recurringEventId": "f040qhb792il07nchhl6fhg74s_R20230111T083000",
+    "originalStartTime": {
+      "dateTime": "2023-01-18T10:30:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "visibility": "public",
+    "iCalUID": "f040qhb792il07nchhl6fhg74s_R20230111T083000@google.com",
+    "sequence": 7,
+    "attendees": [
+      {
+        "email": "andrew.jordaan@platform45.com",
+        "self": true,
+        "responseStatus": "accepted"
+      }
+    ],
+    "attendeesOmitted": true,
+    "hangoutLink": "https://meet.google.com/dwa-ksvi-wux",
+    "conferenceData": {
+      "entryPoints": [
+        {
+          "entryPointType": "video",
+          "uri": "https://meet.google.com/dwa-ksvi-wux",
+          "label": "meet.google.com/dwa-ksvi-wux"
+        },
+        {
+          "entryPointType": "more",
+          "uri": "https://tel.meet/dwa-ksvi-wux?pin=4474533366923",
+          "pin": "4474533366923"
+        },
+        {
+          "regionCode": "ZA",
+          "entryPointType": "phone",
+          "uri": "tel:+27-10-823-1184",
+          "label": "+27 10 823 1184",
+          "pin": "432702550"
+        }
+      ],
+      "conferenceSolution": {
+        "key": {
+          "type": "hangoutsMeet"
+        },
+        "name": "Google Meet",
+        "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+      },
+      "conferenceId": "dwa-ksvi-wux"
+    },
+    "reminders": {
+      "useDefault": true
+    },
+    "eventType": "default"
+  },
+  {
+    "kind": "calendar#event",
+    "etag": "\"3291039481146000\"",
+    "id": "049ehfsjv87hf7icdu0rdk2l70_20230118T090000Z",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=MDQ5ZWhmc2p2ODdoZjdpY2R1MHJkazJsNzBfMjAyMzAxMThUMDkwMDAwWiBhbmRyZXcuam9yZGFhbkBwbGF0Zm9ybTQ1LmNvbQ",
+    "created": "2022-02-22T08:49:00.000Z",
+    "updated": "2022-02-22T08:49:00.573Z",
+    "summary": "Working",
+    "creator": {
+      "email": "andrew.jordaan@platform45.com",
+      "self": true
+    },
+    "organizer": {
+      "email": "unknownorganizer@calendar.google.com",
+      "displayName": "Unknown Organizer"
+    },
+    "start": {
+      "dateTime": "2023-01-18T11:00:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "end": {
+      "dateTime": "2023-01-18T18:00:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "recurringEventId": "049ehfsjv87hf7icdu0rdk2l70",
+    "originalStartTime": {
+      "dateTime": "2023-01-18T11:00:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "iCalUID": "049ehfsjv87hf7icdu0rdk2l70@google.com",
+    "sequence": 0,
+    "attendees": [
+      {
+        "email": "andrew.jordaan@platform45.com",
+        "displayName": "andrew.jordaan@platform45.com",
+        "self": true,
+        "responseStatus": "accepted"
+      }
+    ],
+    "privateCopy": true,
+    "reminders": {
+      "useDefault": true
+    },
+    "eventType": "focusTime"
+  },
+  {
+    "kind": "calendar#event",
+    "etag": "\"3348062713086000\"",
+    "id": "hbqet9562rn0n9a9n4n0egguu1_20230118T133000Z",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=aGJxZXQ5NTYycm4wbjlhOW40bjBlZ2d1dTFfMjAyMzAxMThUMTMzMDAwWiBhbmRyZXcuam9yZGFhbkBwbGF0Zm9ybTQ1LmNvbQ",
+    "created": "2021-08-17T13:21:23.000Z",
+    "updated": "2023-01-18T08:42:36.543Z",
+    "summary": "Front-End Session",
+    "description": "<br>In light of the increase in requirements for front-end skills and the interest from some of you, we've set up a high level approach to up-skilling on front-end tech.<br>The below is just a rough indication of content and approach, things may change, some sections may require more than one week to complete, etc.<ol><li>Week 1</li></ol><ol><li>Session: All participants will take part in going through this curriculum and make any adjustments as needed.</li><li>Self-Study: All participants will have access to some online learning to help get up to speed, so that we can hit the ground running in the next session.</li></ol><ol><li>Week 2</li></ol><ol><li>Session: Barry Els will drive the building out of a simple TodoMVC app using Vanilla JS (don't worry, it won't be boring), participants will watch and ask many, many questions.</li><li>Self-Study: Participants will go off and code the same thing themselves (there'll be a starter kit to help you get going).</li></ol><ol><li>Week 3</li></ol><ol><li>Session: Barry Els will pick a random participant's implementation for review (time allowing), then will drive the refactoring from the previous Vanilla JS to React/Vue (framework to be decided in Week 1 Session).</li><li>Self-Study: Participants will go off and code the same thing themselves (there'll be a starter kit to help you get going).</li></ol><ol><li>Week 4</li></ol><ol><li>Session: Barry Els will pick a random participant's implementation for review (time allowing), then will drive another refactor (plot twist)</li><li>Self-Study: Participants will go off and code the same thing themselves (there'll be a starter kit to help you get going).</li></ol><ol><li>Week 5</li></ol><ol><li>Session: Coding session content to be confirmed, it'll follow along the same lines of \"add a feature\" or \"refactor a feature\"</li><li>Self-Study: Will be based on what content is covered in the session</li></ol>",
+    "creator": {
+      "email": "barry@platform45.com"
+    },
+    "organizer": {
+      "email": "barry@platform45.com"
+    },
+    "start": {
+      "dateTime": "2023-01-18T15:30:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "end": {
+      "dateTime": "2023-01-18T16:00:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "recurringEventId": "hbqet9562rn0n9a9n4n0egguu1_R20230111T133000",
+    "originalStartTime": {
+      "dateTime": "2023-01-18T15:30:00+02:00",
+      "timeZone": "Africa/Johannesburg"
+    },
+    "iCalUID": "hbqet9562rn0n9a9n4n0egguu1_R20230111T133000@google.com",
+    "sequence": 3,
+    "attendees": [
+      {
+        "email": "andrew.jordaan@platform45.com",
+        "self": true,
+        "responseStatus": "accepted"
+      }
+    ],
+    "attendeesOmitted": true,
+    "hangoutLink": "https://meet.google.com/pad-veqn-sio",
+    "conferenceData": {
+      "entryPoints": [
+        {
+          "entryPointType": "video",
+          "uri": "https://meet.google.com/pad-veqn-sio",
+          "label": "meet.google.com/pad-veqn-sio"
+        },
+        {
+          "entryPointType": "more",
+          "uri": "https://tel.meet/pad-veqn-sio?pin=8348056886502",
+          "pin": "8348056886502"
+        },
+        {
+          "regionCode": "ZA",
+          "entryPointType": "phone",
+          "uri": "tel:+27-10-823-0638",
+          "label": "+27 10 823 0638",
+          "pin": "590445695"
+        }
+      ],
+      "conferenceSolution": {
+        "key": {
+          "type": "hangoutsMeet"
+        },
+        "name": "Google Meet",
+        "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+      },
+      "conferenceId": "pad-veqn-sio"
+    },
+    "reminders": {
+      "useDefault": true
+    },
+    "eventType": "default"
+  },
+  {
+    "kind": "calendar#event",
+    "etag": "\"3335638840058000\"",
+    "id": "0q7kp582jc73g2q1o2g18hah3h_20230118T140000Z",
+    "status": "confirmed",
+    "htmlLink": "https://www.google.com/calendar/event?eid=MHE3a3A1ODJqYzczZzJxMW8yZzE4aGFoM2hfMjAyMzAxMThUMTQwMDAwWiBhbmRyZXcuam9yZGFhbkBwbGF0Zm9ybTQ1LmNvbQ",
+    "created": "2022-11-07T11:01:19.000Z",
+    "updated": "2022-11-07T11:10:20.029Z",
+    "summary": "Andrew + Barry: 1-on-1",
+    "creator": {
+      "email": "barry@platform45.com"
+    },
+    "organizer": {
+      "email": "barry@platform45.com"
+    },
+    "start": {
+      "dateTime": "2023-01-18T16:00:00+02:00",
+      "timeZone": "Europe/London"
+    },
+    "end": {
+      "dateTime": "2023-01-18T16:30:00+02:00",
+      "timeZone": "Europe/London"
+    },
+    "recurringEventId": "0q7kp582jc73g2q1o2g18hah3h",
+    "originalStartTime": {
+      "dateTime": "2023-01-18T16:00:00+02:00",
+      "timeZone": "Europe/London"
+    },
+    "iCalUID": "0q7kp582jc73g2q1o2g18hah3h@google.com",
+    "sequence": 1,
+    "attendees": [
+      {
+        "email": "andrew.jordaan@platform45.com",
+        "self": true,
+        "responseStatus": "accepted"
+      }
+    ],
+    "attendeesOmitted": true,
+    "hangoutLink": "https://meet.google.com/igo-uwxm-ard",
+    "conferenceData": {
+      "entryPoints": [
+        {
+          "entryPointType": "video",
+          "uri": "https://meet.google.com/igo-uwxm-ard",
+          "label": "meet.google.com/igo-uwxm-ard"
+        },
+        {
+          "entryPointType": "more",
+          "uri": "https://tel.meet/igo-uwxm-ard?pin=8115857072680",
+          "pin": "8115857072680"
+        },
+        {
+          "regionCode": "GB",
+          "entryPointType": "phone",
+          "uri": "tel:+44-20-3956-5716",
+          "label": "+44 20 3956 5716",
+          "pin": "348180136"
+        }
+      ],
+      "conferenceSolution": {
+        "key": {
+          "type": "hangoutsMeet"
+        },
+        "name": "Google Meet",
+        "iconUri": "https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v6/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png"
+      },
+      "conferenceId": "igo-uwxm-ard"
+    },
+    "reminders": {
+      "useDefault": true
+    },
+    "eventType": "default"
+  }
+]
