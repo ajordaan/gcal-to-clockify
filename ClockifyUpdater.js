@@ -107,16 +107,16 @@ export default class ClockifyUpdater {
     }
 
     try {
-      this.validCalendarEvents.forEach(event => {
+      for(const event of this.validCalendarEvents) {
         const eventTaskId = this.updatedCategorisedEvents[event.summary]
         const eventTask = this.activeTasks.find(task => task.id === eventTaskId)
-        this.addTimeEntry(eventTask, event, `Added a ${eventTask.name} entry for ${event.summary} (${timeInHoursMinutes(new Date(event.start.dateTime))} - ${timeInHoursMinutes(new Date(event.end.dateTime))})`)
-      })
+        await this.addTimeEntry(eventTask, event, `Added a ${eventTask.name} entry for ${event.summary} (${timeInHoursMinutes(new Date(event.start.dateTime))} - ${timeInHoursMinutes(new Date(event.end.dateTime))})`)
+      }
 
       const developmentTask = this.activeTasks.find(task => task.name === 'Development')
-      this.developmentEvents.forEach(devEvent => {
-        this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
-      })
+      for(const devEvent of this.developmentEvents) {
+        await this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
+      }
 
       console.log('Finished adding entries, please confirm they are correct on clockify: https://app.clockify.me/calendar')
     } catch (error) {
