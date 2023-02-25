@@ -5,10 +5,9 @@ dotenv.config()
 import got from 'got';
 
 export default class ClockifyAPI {
-  constructor(apiKey, userId, workspaceId) {
-    this.USER_ID = userId
-    this.WORKSPACE_ID = workspaceId
+  constructor(apiKey) {
     this.API_KEY = apiKey
+    this.userInfo = null
 
     const options = {
       prefixUrl: 'https://api.clockify.me/api/v1',
@@ -23,13 +22,30 @@ export default class ClockifyAPI {
   }
 
   async getUserInfo() {
-    const url = `user`
-    const res = await this.client.get(url)
-    return JSON.parse(res)
+    if(!this.userInfo) {
+      const url = `user`
+      const res = await this.client.get(url)
+      this.userInfo = JSON.parse(res.body)
+    }
+    return this.userInfo
+  }
+
+  async userId() {
+    const userInfo = await this.getUserInfo()
+
+    return userInfo.id
+  }
+
+  async workspaceId() {
+    const userInfo = await this.getUserInfo()
+
+    return userInfo.defaultWorkspace || userInfo.activeWorkspace
   }
 
   async addTimeEntry(task, start, end) {
-    const url = `workspaces/${task.workspaceId}/time-entries`
+    const wId = await this.workspaceId()
+
+    const url = `workspaces/${wId}/time-entries`
     const options = {
       json: {
         projectId: task.projectId,
@@ -41,43 +57,50 @@ export default class ClockifyAPI {
     const res = await this.client.post(url, options)
 
     return res.statusCode
-  }
-
-  async addTimeEntryFor(taskType, start, end) {
-    return addTimeEntry(CLOCKIFY_TASKS[taskType], start, end)
+    // console.log('test add time entry')
+    // console.log({taskId: task.id, taskName: task.name, projectId: task.projectId, start, end})
+    // return `test time entry submission: ${task.name}`
   }
 
   async getWorkspaceProjects() {
-    const url = `/workspaces/${this.WORKSPACE_ID}/projects`
+    const wId = await this.workspaceId()
+    const url = `workspaces/${wId}/projects`
 
     const res = await this.client.get(url)
 
-    return JSON.parse(res)
+    return JSON.parse(res.body)
   }
 
   async getProjectTasks(projectId) {
-    const url = `/workspaces/${this.WORKSPACE_ID}/projects/${projectId}/tasks`
+    const wId = await this.workspaceId()
+
+    const url = `workspaces/${wId}/projects/${projectId}/tasks`
 
     const res = await this.client.get(url)
     const tasks = JSON.parse(res.body)
 
-    return tasks.map(task => { return { workspaceId, ...task } })
+    return tasks.map(task => { return { workspaceId: wId, ...task } })
   }
 
-  async getTimeEntries(workspaceId, startTime, endTime) {
+  async getAllProjectsWithTasks() {
+    const projects = await this.getWorkspaceProjects()
+    for(const project of projects) {
+      project.tasks = await this.getProjectTasks(project.id)
+    }
 
-    const url = `workspaces/${workspaceId}/user/${this.USER_ID}/time-entries?start=${startTime}&end=${endTime}`
+    return projects
+  }
+
+  async getTimeEntries(startTime, endTime) {
+    return []
+
+    const wId = await this.workspaceId()
+    const uId = await this.userId()
+
+    const url = `workspaces/${wId}/user/${uId}/time-entries?start=${startTime}&end=${endTime}`
 
     const res = await this.client.get(url)
     return JSON.parse(res.body)
-  }
-
-  async getTimeEntriesForToday(taskId, projectId, workspaceId) {
-    const today = new Date()
-    const startDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()} ${DAY_START_TIME}`
-    const endDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()} ${DAY_END_TIME}`
-
-    return getTimeEntries(taskId, projectId, workspaceId, startDate, endDate)
   }
 }
 

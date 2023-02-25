@@ -29,6 +29,15 @@ export const multiSelectPrompt = ({ name, message, choices, maxSelection, hint }
   }
 }
 
+export const textPrompt = ({name, message, initial}) => {
+  return {
+    type: 'text',
+    name,
+    message,
+    initial,
+  }
+}
+
 export const numberPrompt = ({name, message, initial, min, max}) => {
   return {
     type: 'number',

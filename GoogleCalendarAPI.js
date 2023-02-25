@@ -25,7 +25,7 @@ export default class GoogleCalendarAPI {
 
 
   async getEvents(fromTime, untilTime, onlyAcceptedEvents = true) {
-    const eventsRes = await calendar.events.list({
+    const eventsRes = await this.calendar.events.list({
       calendarId: this.GOOGLE_CALENDAR_ID,
       timeMin: fromTime.toISOString(),
       timeMax: untilTime.toISOString(),
@@ -36,7 +36,13 @@ export default class GoogleCalendarAPI {
     });
 
     if (onlyAcceptedEvents) {
-      return eventsRes.data.items.filter(event => event.attendees?.at(0)?.responseStatus === 'accepted')
+      return eventsRes.data.items.filter(event => {
+        if(event.attendees) {
+          return event.attendees?.at(0)?.responseStatus === 'accepted'
+        } else {
+          return event.creator?.self
+        }
+      })
     }
 
     return eventsRes.data.items
