@@ -11,6 +11,8 @@ export const currentWorkDay = () => {
   return workDay
 }
 
+export const timeInHoursMinutes = (date) => `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+
 export const convertTimeIntervalToDate = (timeInterval) => {
   return { start: new Date(timeInterval.start), end: new Date(timeInterval.end) }
 }

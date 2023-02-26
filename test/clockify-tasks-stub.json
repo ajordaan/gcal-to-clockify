@@ -1,0 +1,72 @@
+[
+	{
+		"id": "635bdc7a046c243d2ea6cfd5",
+		"name": "Maintenance",
+		"projectId": "632835b815e8e969ad37c0c4",
+		"assigneeIds": [],
+		"assigneeId": null,
+		"userGroupIds": [],
+		"estimate": null,
+		"status": "ACTIVE",
+		"duration": null,
+		"billable": true,
+		"hourlyRate": null,
+		"costRate": null
+	},
+	{
+		"id": "635bdc6cbe208c7ada2a6fc3",
+		"name": "DevOps",
+		"projectId": "632835b815e8e969ad37c0c4",
+		"assigneeIds": [],
+		"assigneeId": null,
+		"userGroupIds": [],
+		"estimate": null,
+		"status": "ACTIVE",
+		"duration": null,
+		"billable": true,
+		"hourlyRate": null,
+		"costRate": null
+	},
+	{
+		"id": "635bdc699264db257e9f1a28",
+		"name": "Development",
+		"projectId": "632835b815e8e969ad37c0c4",
+		"assigneeIds": [],
+		"assigneeId": null,
+		"userGroupIds": [],
+		"estimate": null,
+		"status": "ACTIVE",
+		"duration": null,
+		"billable": true,
+		"hourlyRate": null,
+		"costRate": null
+	},
+	{
+		"id": "635bdc66046c243d2ea6cdd8",
+		"name": "Client Meeting",
+		"projectId": "632835b815e8e969ad37c0c4",
+		"assigneeIds": [],
+		"assigneeId": null,
+		"userGroupIds": [],
+		"estimate": null,
+		"status": "ACTIVE",
+		"duration": null,
+		"billable": true,
+		"hourlyRate": null,
+		"costRate": null
+	},
+	{
+		"id": "635bdc63be208c7ada2a6ec2",
+		"name": "Ceremony",
+		"projectId": "632835b815e8e969ad37c0c4",
+		"assigneeIds": [],
+		"assigneeId": null,
+		"userGroupIds": [],
+		"estimate": null,
+		"status": "ACTIVE",
+		"duration": null,
+		"billable": true,
+		"hourlyRate": null,
+		"costRate": null
+	}
+]
