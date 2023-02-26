@@ -22,10 +22,11 @@ The script works by fetching events from your calendar, asking you to categorise
 * Run the script: `npm start`
 * Select "Clock in"
 * Enter the date you want to clock in for (leave blank for today's date)
-* If there are uncategorised events, then the script will task you what type of task they are. You can also "ignore" events so they won't be considered
+* If there are uncategorised events, you will be asked what type of task they are. You can also "ignore" events so they won't be considered
 * The script will upload the events as time entries with their task types (excluding "ignored" events)
-* The script will then upload development time entries in the gaps in your schedule, from the start of your work day to the end
+* The script will then upload development time entries in the gaps in your schedule, from the start of your work day to the end (if you enabled this in the setup)
 
 ## Limitations
 * To fill in the gaps in your schedule, the script looks for a task with the name "Development". 
-  This won't work for users who work on multiple projects. You can still categorise your calendar tasks, but the development task will have to be manually changed or disabled.
+  This won't work for users who work on multiple projects.
+  You can still categorise your calendar tasks, but the development task will have to be manually changed or disabled.
