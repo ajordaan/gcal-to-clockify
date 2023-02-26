@@ -17,6 +17,14 @@ export const mainMenuPrompts = [
   }
 ]
 
+export const booleanPrompt = ({name, message, initial}) => {
+  return {
+    type: 'confirm',
+    name,
+    message,
+  }
+}
+
 export const multiSelectPrompt = ({ name, message, choices, maxSelection, hint }) => {
   return {
     type: 'multiselect',

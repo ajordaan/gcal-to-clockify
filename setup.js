@@ -1,6 +1,6 @@
 import prompts from 'prompts'
 import fs from 'fs'
-import { multiSelectPrompt , numberPrompt, textPrompt } from './Prompter.js'
+import { booleanPrompt, multiSelectPrompt , numberPrompt, textPrompt } from './Prompter.js'
 import ClockifyAPI from './ClockifyAPI.js';
 import GoogleCalendarAPI from './GoogleCalendarAPI.js'
 
@@ -22,6 +22,16 @@ export default class Setup {
   }
 
   setupComplete() {
+    if(fs.existsSync(this.configFilePath)) {
+      const config = this.getClockifyConfig()
+
+      return [config.activeTasks, config.workDay, config.fillInGaps].every(prop => prop !== null && prop != undefined)
+    } else {
+      return false
+    }
+  }
+
+  setupAbleToRun() {
     const configProps = [
       this.googleConfig.GOOGLE_PRIVATE_KEY,
       this.googleConfig.GOOGLE_CLIENT_EMAIL,
@@ -65,19 +75,27 @@ export default class Setup {
   }
 
   async runSetup() {
+    if(!this.setupAbleToRun()) {
+      console.log('Missing env properties. Please add clockify API key and Google service account info to .env file')
+      return;
+    }
     const config = {}
 
     config.activeTasks = await this.selectActiveClockifyTasks()
     const workDayTimes = await this.setStartAndEndTime()
+
     config.workDay = {}
     config.workDay.startTime = workDayTimes.start
     config.workDay.endTime = workDayTimes.end
+    config.fillInGaps = await this.setFillInScheduleGaps()
     this.updateConfig(config)
   }
 
-  async getStartAndEndOfWorkDay() {
+  async setFillInScheduleGaps() {
+    const fillInGaps = booleanPrompt({ name: 'fillInGaps', message: 'Do you want to automatically fill gaps in your schedule with a Development event?' })
+    const response = await prompts(fillInGaps)
+    return response.fillInGaps
   }
-
   async setStartAndEndTime() {
     const workDayStartTimePrompt = textPrompt({ name: 'start', message: 'Enter your work day start time in HH:MM (eg 09:00)' }) 
     const workDayEndTimePrompt = textPrompt({ name: 'end', message: 'Enter your work day end time in HH:MM (eg 17:00)' }) 

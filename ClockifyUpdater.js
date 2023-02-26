@@ -4,7 +4,7 @@ import { WORK_DAY_START_TIME, WORK_DAY_END_TIME, getGapsInCalendarSchedule , tim
 
 export default class ClockifyUpdater {
 
-  constructor(date, calendarEvents, previouslyCategorisedEvents, activeTasks, clockifyAPI, setup) {
+  constructor(date, calendarEvents, previouslyCategorisedEvents, activeTasks, clockifyAPI, setup, fillInGaps) {
     this.clockifyAPI = clockifyAPI
     this.setup = setup
     this.calendarEvents = calendarEvents
@@ -75,6 +75,11 @@ export default class ClockifyUpdater {
   }
 
   async updateClockify(date) {
+    if(!setup.setupComplete()) {
+      console.log('Please run setup before clocking in')
+      return
+    }
+
     const targetDate = date
 
     console.log(`Adding time entries for ${this.workDay.start.toString()}`)
@@ -113,9 +118,11 @@ export default class ClockifyUpdater {
         await this.addTimeEntry(eventTask, event, `Added a ${eventTask.name} entry for ${event.summary} (${timeInHoursMinutes(new Date(event.start.dateTime))} - ${timeInHoursMinutes(new Date(event.end.dateTime))})`)
       }
 
-      const developmentTask = this.activeTasks.find(task => task.name === 'Development')
-      for(const devEvent of this.developmentEvents) {
-        await this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
+      if(fillInGaps) {
+        const developmentTask = this.activeTasks.find(task => task.name === 'Development')
+        for(const devEvent of this.developmentEvents) {
+          await this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
+        }
       }
 
       console.log('Finished adding entries, please confirm they are correct on clockify: https://app.clockify.me/calendar')
