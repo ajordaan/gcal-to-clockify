@@ -11,10 +11,7 @@ export default class Setup {
     this.googleConfig = googleConfig
     this.categorisedEventsFilePath = 'config/categorised-events.json'
     this.configFilePath = 'config/clockify.json'
-  }
-
-  setTargetDate(date) {
-    this.targetDate = date
+    this.targetDate = null
   }
 
   getClockifyConfig() {
@@ -57,21 +54,15 @@ export default class Setup {
       return previouslyCategorisedEventsFile.length > 2 ? JSON.parse(previouslyCategorisedEventsFile) : []
     } 
 
-    return []
+    return {}
   }
 
   saveCategorisedEvents(events) {
     fs.writeFileSync(this.categorisedEventsFilePath, JSON.stringify(events))
   }
 
-  workDay() {
-    const WORK_DAY_START_TIME = '09:00'
-    const WORK_DAY_END_TIME = '17:00'
-
-    return {
-      start: new Date(`${this.targetDate.toISOString().split('T')[0]} ${WORK_DAY_START_TIME}`),
-      end: new Date(`${this.targetDate.toISOString().split('T')[0]} ${WORK_DAY_END_TIME}`)
-    }
+  setTargetDate(date) {
+    this.targetDate = date
   }
 
   async runSetup() {
@@ -89,6 +80,8 @@ export default class Setup {
     config.workDay.endTime = workDayTimes.end
     config.fillInGaps = await this.setFillInScheduleGaps()
     this.updateConfig(config)
+    console.log('Setup complete!')
+
   }
 
   async setFillInScheduleGaps() {
