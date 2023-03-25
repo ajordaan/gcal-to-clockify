@@ -2,21 +2,24 @@ import Setup from './setup.js'
 import { title } from './Utils.js'
 import prompts from 'prompts';
 import { mainMenuPrompts } from './Prompter.js'
+import { combineTimeAndDate } from './Utils.js'
 import ClockifyUpdater from './ClockifyUpdater.js';
 import * as dotenv from 'dotenv'
 
-const clockIn = async(setup) => {
+const checkmarkIcon = "✅"
+const crossIcon = "❌"
 
+const clockIn = async(setup) => {
+if(!setup.setupComplete()) {
+  console.log("Please run setup before clocking in")
+  return
+}
   const googleCalendarAPI = setup.getGoogleCalendarAPI()
-  const clockifyAPI = setup.getClockifyAPI()
-  const workDay = setup.workDay()
+  const workDayTimes = setup.getClockifyConfig().workDay
+  const workDay = combineTimeAndDate(workDayTimes.startTime, workDayTimes.endTime, setup.targetDate)
   const calendarEvents = await googleCalendarAPI.getEvents(workDay.start, workDay.end)
-  const previouslyCategorisedEvents = setup.getPreviouslyCategorisedEvents()
-  const activeTasks = setup.activeTasks
-  await clockifyAPI.getUserInfo()
-  const clockifyConfig = setup.getClockifyConfig()
-  const clockifyUpdater = new ClockifyUpdater(setup.targetDate, calendarEvents, previouslyCategorisedEvents, clockifyConfig.activeTasks, clockifyAPI, setup)
-  clockifyUpdater.updateClockify(setup.targetDate)
+  const clockifyUpdater = new ClockifyUpdater(setup, calendarEvents, workDay)
+  clockifyUpdater.updateClockify()
 }
 
 (async () => {
@@ -39,6 +42,10 @@ const clockIn = async(setup) => {
       const targetDate = response.clockInDate ? new Date(response.clockInDate) : new Date()
       setup.setTargetDate(targetDate)
       await clockIn(setup)
+      break
+    case 'Check status of current week':
+      break
+    case 'Add custom time entry':
       break
     case 'setup':
       setup.runSetup()

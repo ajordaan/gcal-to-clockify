@@ -17,6 +17,13 @@ export const convertTimeIntervalToDate = (timeInterval) => {
   return { start: new Date(timeInterval.start), end: new Date(timeInterval.end) }
 }
 
+export const combineTimeAndDate = (startTime, endTime, date) => {
+  return {
+    start: new Date(`${date.toISOString().split('T')[0]} ${startTime}`),
+    end: new Date(`${date.toISOString().split('T')[0]} ${endTime}`)
+  }
+}
+
 export const getGapsInCalendarSchedule = (events, workDay) => {
   const gaps = []
 
