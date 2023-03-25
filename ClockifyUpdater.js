@@ -1,18 +1,45 @@
-import fs from 'fs'
 import prompts from 'prompts';
-import { WORK_DAY_START_TIME, WORK_DAY_END_TIME, getGapsInCalendarSchedule , timeInHoursMinutes} from './Utils.js';
+import { getGapsInCalendarSchedule , timeInHoursMinutes } from './Utils.js';
 
 export default class ClockifyUpdater {
 
-  constructor(date, calendarEvents, previouslyCategorisedEvents, activeTasks, clockifyAPI, setup, fillInGaps) {
-    this.clockifyAPI = clockifyAPI
+  constructor(setup, calendarEvents, workDay) {
     this.setup = setup
+    this.clockifyAPI = setup.getClockifyAPI()
     this.calendarEvents = calendarEvents
-    this.previouslyCategorisedEvents = previouslyCategorisedEvents
-    this.activeTasks = activeTasks
     this.updatedCategorisedEvents = {}
+    this.workDay = workDay
+    this.activeTasks = this.setup.getClockifyConfig().activeTasks
+    this.targetDate = setup.targetDate
+  }
 
-    this.targetDate = date
+  get fillInGaps() {
+    return this.setup.getClockifyConfig().fillInGaps
+  }
+
+  get previouslyCategorisedEvents() {
+   return this.setup.getPreviouslyCategorisedEvents()
+  }
+
+  get unknownCalendarEvents() {
+    return this.calendarEvents.filter(event => !this.previouslyCategorisedEvents[event.summary])
+  }
+
+  get ignoredCalendarEvents() {
+    return Object.keys(this.updatedCategorisedEvents).filter(eventName => this.updatedCategorisedEvents[eventName] === 'ignore')
+  }
+
+  get validCalendarEvents() {
+    return this.calendarEvents.filter(event => !this.ignoredCalendarEvents.includes(event.summary))
+  }
+
+  get developmentEvents() {
+    const gaps = getGapsInCalendarSchedule(this.validCalendarEvents, this.workDay)
+    return gaps.map(gap => { return { summary: 'development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
+  }
+
+  set date(d) {
+    this.targetDate = d
   }
 
   async categoriseUnknownEvents(clockifyTasks) {
@@ -39,49 +66,13 @@ export default class ClockifyUpdater {
     return currentClockifyEntries.length > 0
   }
 
-  get unknownCalendarEvents() {
-    return this.calendarEvents.filter(event => !this.previouslyCategorisedEvents[event.summary])
-  }
-
-  get ignoredCalendarEvents() {
-    return Object.keys(this.updatedCategorisedEvents).filter(eventName => this.updatedCategorisedEvents[eventName] === 'ignore')
-  }
-
-  get validCalendarEvents() {
-    return this.calendarEvents.filter(event => !this.ignoredCalendarEvents.includes(event.summary))
-  }
-
-  get developmentEvents() {
-    const gaps = getGapsInCalendarSchedule(this.validCalendarEvents, this.workDay)
-    return gaps.map(gap => { return { summary: 'development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
-  }
-
-  set date(d) {
-    this.targetDate = d
-  }
-
-  get workDay() {
-    const WORK_DAY_START_TIME = '09:00'
-    const WORK_DAY_END_TIME = '17:00'
-    return {
-      start: new Date(`${this.targetDate.toISOString().split('T')[0]} ${WORK_DAY_START_TIME}`),
-      end: new Date(`${this.targetDate.toISOString().split('T')[0]} ${WORK_DAY_END_TIME}`)
-    }
-  }
 
   async addTimeEntry(task, event, message) {
     await this.clockifyAPI.addTimeEntry(task, new Date(event.start.dateTime).toISOString(), new Date(event.end.dateTime).toISOString())
     console.log(message)
   }
 
-  async updateClockify(date) {
-    if(!setup.setupComplete()) {
-      console.log('Please run setup before clocking in')
-      return
-    }
-
-    const targetDate = date
-
+  async updateClockify() {
     console.log(`Adding time entries for ${this.workDay.start.toString()}`)
 
     const existingEntries = await this.clockifyHasExistingEntries()
@@ -99,7 +90,7 @@ export default class ClockifyUpdater {
 
     this.updatedCategorisedEvents = { ...this.previouslyCategorisedEvents, ...newCategorisedEvents }
 
-    if(Object.keys(newCategorisedEvents).length > 1) {
+    if(Object.keys(newCategorisedEvents).length > 0) {
       try {
         this.setup.saveCategorisedEvents(this.updatedCategorisedEvents)
         console.log('Updated saved events config')
@@ -112,13 +103,13 @@ export default class ClockifyUpdater {
     }
 
     try {
-      for(const event of this.validCalendarEvents) {
+      for (const event of this.validCalendarEvents) {
         const eventTaskId = this.updatedCategorisedEvents[event.summary]
         const eventTask = this.activeTasks.find(task => task.id === eventTaskId)
         await this.addTimeEntry(eventTask, event, `Added a ${eventTask.name} entry for ${event.summary} (${timeInHoursMinutes(new Date(event.start.dateTime))} - ${timeInHoursMinutes(new Date(event.end.dateTime))})`)
       }
 
-      if(fillInGaps) {
+      if(this.fillInGaps) {
         const developmentTask = this.activeTasks.find(task => task.name === 'Development')
         for(const devEvent of this.developmentEvents) {
           await this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
