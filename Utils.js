@@ -73,5 +73,24 @@ export const getGapsInClockifySchedule = (timeEntries, workDay) => {
   return gaps
 }
 
+export const getStartOfWeek = (date) => {
+  const day = date.getDay()
+  const diff = date.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+  return new Date(date.setDate(diff));
+}
+
+export const getDateFromWeekDayName = (dayOfWeek) => {
+  const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun" ];
+  const today = new Date();
+  
+  const monday = getStartOfWeek(today)
+  const targetDayNumber = weekdays.indexOf(dayOfWeek.toLowerCase())
+  const targetDate = monday
+  
+  targetDate.setDate(targetDate.getDate() + targetDayNumber)
+
+  return targetDate;
+}
+
 import fs from 'fs'
 export const title = fs.readFileSync('./ascii-title.txt').toString()

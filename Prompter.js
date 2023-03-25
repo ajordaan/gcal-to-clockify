@@ -7,13 +7,14 @@ export const mainMenuPrompts = [
       { title: 'Clock In', value: 'clock-in' },
       { title: 'Add custom time entry', value: 'custom-entry' },
       { title: 'Setup', value: 'setup' },
+      { title: 'Check status of current week', value: 'status' },
       { title: 'Exit', value: 'exit' }
     ]
   },
   {
     type: prev => prev == 'clock-in' ? 'text' : null,
     name: 'clockInDate',
-    message: 'Enter clock-in date (YYYY-MM-DD). Leave blank for today\'s date'
+    message: 'Enter clock-in date (YYYY-MM-DD or DDD)'
   }
 ]
 

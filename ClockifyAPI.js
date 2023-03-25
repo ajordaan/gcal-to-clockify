@@ -57,9 +57,6 @@ export default class ClockifyAPI {
     const res = await this.client.post(url, options)
 
     return res.statusCode
-    // console.log('test add time entry')
-    // console.log({taskId: task.id, taskName: task.name, projectId: task.projectId, start, end})
-    // return `test time entry submission: ${task.name}`
   }
 
   async getWorkspaceProjects() {
@@ -92,8 +89,6 @@ export default class ClockifyAPI {
   }
 
   async getTimeEntries(startTime, endTime) {
-    return []
-
     const wId = await this.workspaceId()
     const uId = await this.userId()
 
