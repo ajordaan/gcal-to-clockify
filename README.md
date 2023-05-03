@@ -11,6 +11,7 @@ To run this script you will need:
 
 ## Setup
 * Clone this repo
+* Run `npm i`
 * Copy the `example.env` file and rename it to `.env` and replace the placeholder values with your clockify api key and google service account info
 * Run the script: `npm start`
 * Select the "setup" option in the menu and follow the prompts
