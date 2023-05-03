@@ -82,11 +82,11 @@ export const getStartOfWeek = (date) => {
 export const getDateFromWeekDayName = (dayOfWeek) => {
   const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun" ];
   const today = new Date();
-  
+
   const monday = getStartOfWeek(today)
   const targetDayNumber = weekdays.indexOf(dayOfWeek.toLowerCase())
   const targetDate = monday
-  
+
   targetDate.setDate(targetDate.getDate() + targetDayNumber)
 
   return targetDate;

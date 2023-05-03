@@ -8,10 +8,10 @@ const checkmarkIcon = "✅"
 const crossIcon = "❌"
 
 const clockIn = async(setup, prompts) => {
-if(!setup.setupComplete()) {
-  console.log("Please run setup before clocking in")
-  return
-}
+  if(!setup.setupComplete()) {
+    console.log("Please run setup before clocking in")
+    return
+  }
   const googleCalendarAPI = setup.getGoogleCalendarAPI()
   const workDayTimes = setup.getClockifyConfig().workDay
   const workDay = combineTimeAndDate(workDayTimes.startTime, workDayTimes.endTime, setup.targetDate)
@@ -27,7 +27,7 @@ const statusOfCurrentWeek = async(setup) => {
   const monday = getStartOfWeek(new Date())
   const clockifyAPI = setup.getClockifyAPI()
   const currDate = monday
-  
+
   console.log('NOTE: This only checks if there are any entries during your work hours, it doesn\'t mean the entries are complete/correct\n')
 
   for(let i = 0; i < 5; i++) {
@@ -36,7 +36,7 @@ const statusOfCurrentWeek = async(setup) => {
 
     const entries = await clockifyAPI.getTimeEntries(workDay.start.toISOString(), workDay.end.toISOString())
     const status = entries.length > 0 ? checkmarkIcon : crossIcon
-    
+
     console.log(`${weekday}: ${status}`)
     currDate.setDate(currDate.getDate() + 1)
   }
@@ -56,7 +56,7 @@ const customTimeEntry = async(setup, prompts) => {
     message: 'What category is this entry?',
     choices: taskTypeChoices
   }
-  
+
   const entryDatePrompt = textPrompt({ name: 'date', message: 'Entry date in YYYY-MM-DD (leave blank for today)' }) 
   const entryStartTimePrompt = textPrompt({ name: 'start', message: 'Entry start time in HH:MM (eg 09:00)' }) 
   const entryEndTimePrompt = textPrompt({ name: 'end', message: 'Entry end time in HH:MM (eg 17:00)' }) 
@@ -70,7 +70,7 @@ const customTimeEntry = async(setup, prompts) => {
   const selectedTask = clockifyTasks.find(task => task.id == response.taskType)
   const times = combineTimeAndDate(entryDate, response.start, response.end)
   await clockifyAPI.addTimeEntry(selectedTask,times.start.toISOString(), times.end.toISOString())
-  
+
   console.log(`Added a custom ${task.name} entry (${timeInHoursMinutes(times.start)} - ${timeInHoursMinutes(times.end)})`)
 }
 
@@ -100,9 +100,9 @@ export const mainMenu = async(prompts, setup) => {
     case 'status':
       await statusOfCurrentWeek(setup)
       break
-    // case 'custom-entry':
-    //   await customTimeEntry(setup, prompts)
-    //   break
+      // case 'custom-entry':
+      //   await customTimeEntry(setup, prompts)
+      //   break
     case 'setup':
       setup.runSetup()
       break

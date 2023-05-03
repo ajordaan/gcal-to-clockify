@@ -22,7 +22,7 @@ export default class ClockifyUpdater {
   }
 
   get previouslyCategorisedEvents() {
-   return this.setup.getPreviouslyCategorisedEvents()
+    return this.setup.getPreviouslyCategorisedEvents()
   }
 
   get unknownCalendarEvents() {
