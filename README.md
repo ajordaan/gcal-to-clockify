@@ -7,7 +7,8 @@ Always double check that the time entries have been added correctly on Clockify!
 ## Prerequisites
 To run this script you will need:
 * A clockify API key (Found in your [user settings](https://clockify.me/user/settings))
-* A google service account with calendar API enabled (the first half of [this tutorial should help](https://dev.to/megazear7/google-calendar-api-integration-made-easy-2a68))
+* A google service account with calendar API enabled (the first two steps of [this tutorial should help](https://dev.to/megazear7/google-calendar-api-integration-made-easy-2a68))
+  * Once you have created a service account you will be able to download a JSON file that has all the required credentials for this script
 
 ## Setup
 * Clone this repo
