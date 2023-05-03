@@ -1,4 +1,3 @@
-import Setup from './setup.js'
 import { getDateFromWeekDayName, getStartOfWeek, title } from './Utils.js'
 import { mainMenuPrompts, textPrompt } from './Prompter.js'
 import { combineTimeAndDate } from './Utils.js'
@@ -68,21 +67,11 @@ const customTimeEntry = async(setup) => {
   // await clockifyAPI.addTimeEntry(task, new Date(startTime).toISOString(), new Date(endTime).toISOString())
 }
 
-
-export const mainMenu = async(prompts) => {
-  dotenv.config()
+export const mainMenu = async(prompts, setup) => {
   console.log(title)
   let exit = false
 
-  const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY
-  const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL
-  const GOOGLE_PROJECT_NUMBER = process.env.GOOGLE_PROJECT_NUMBER
-  const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID
-  const CLOCKIFY_API_KEY = process.env.CLOCKIFY_API_KEY
-
   const response = await prompts(mainMenuPrompts);
-
-  const setup = new Setup(CLOCKIFY_API_KEY, { GOOGLE_PRIVATE_KEY, GOOGLE_CLIENT_EMAIL, GOOGLE_PROJECT_NUMBER, GOOGLE_CALENDAR_ID })
 
   switch (response.action) {
     case 'clock-in':
