@@ -102,19 +102,15 @@ describe('ClockifyUpdater', () => {
 
 
   test('Update Clockify', async() => {
-    const clockify = nock('https://api.clockify.me/api/v1')
     const gcal = nock('https://www.googleapis.com')
-
     gcal.post('/oauth2/v4/token').reply(200)
-
     gcal.get(uri => uri.includes('/events')).reply(200, { items: calendarEventStub })
 
+    const clockify = nock('https://api.clockify.me/api/v1')
     clockify.get('/user').reply(200, clockifyUserInfoStub)
-
     clockify.get(uri => uri.includes('/time-entries?')).reply(200, [])
+    clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).thrice().reply(200)
 
-    const clockedIn = clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).thrice().reply(200)
-    clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).reply(200)
     prompts.inject([ 'clock-in', '', 'task1']);
 
     const setup = mockSetupClass(new Date(), )
@@ -126,23 +122,18 @@ describe('ClockifyUpdater', () => {
     expect(logSpy).toHaveBeenCalledWith('Added a Support entry for Daily Standup (10:30 - 11:30)' )
     expect(logSpy).toHaveBeenCalledWith('Added a Development entry (09:00 - 10:30)' )
     expect(logSpy).toHaveBeenCalledWith('Added a Development entry (11:30 - 17:00)' )
-
   })
 
   test('Update Clockify - with categorised events', async() => {
-    const clockify = nock('https://api.clockify.me/api/v1')
     const gcal = nock('https://www.googleapis.com')
-
     gcal.post('/oauth2/v4/token').reply(200)
-
     gcal.get(uri => uri.includes('/events')).reply(200, { items: calendarEventStub })
 
+    const clockify = nock('https://api.clockify.me/api/v1')
     clockify.get('/user').reply(200, clockifyUserInfoStub)
-
     clockify.get(uri => uri.includes('/time-entries?')).reply(200, [])
+    clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).thrice().reply(200)
 
-    const clockedIn = clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).thrice().reply(200)
-    clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).reply(200)
     prompts.inject([ 'clock-in', '', ]);
 
     const prevEvents = {'Daily Standup': 'task2'}
