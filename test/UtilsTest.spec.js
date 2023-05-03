@@ -11,13 +11,22 @@ describe('Utils', () => {
       start: new Date(`2022-01-01 ${WORK_DAY_START_TIME}`),
       end: new Date(`2022-01-01 ${WORK_DAY_END_TIME}`)
     }
-    const timeEntries = [{ start: { dateTime:  "2022-01-01 11:00"}, end: { dateTime: '2022-01-01 12:00'  }}, { start: { dateTime: '2022-01-01 14:00'}, end: { dateTime: '2022-01-01 16:00' }}]
+    let timeEntries = [{ start: { dateTime:  "2022-01-01 11:00"}, end: { dateTime: '2022-01-01 12:00'  }}, { start: { dateTime: '2022-01-01 14:00'}, end: { dateTime: '2022-01-01 16:00' }}]
 
-    const gaps = getGapsInCalendarSchedule(timeEntries, workDay)
+    let gaps = getGapsInCalendarSchedule(timeEntries, workDay)
 
     expect(gaps.length).toBe(3)
 
     expect(gaps).toStrictEqual([{ start: new Date('2022-01-01 09:00'), end: new Date('2022-01-01 11:00') }, { start: new Date('2022-01-01 12:00'), end: new Date('2022-01-01 14:00') }, { start: new Date('2022-01-01 16:00'), end: new Date('2022-01-01 17:00' )}])
+
+
+     timeEntries = [{ start: { dateTime:  "2022-01-01 10:30"}, end: { dateTime: '2022-01-01 11:00'}}]
+
+     gaps = getGapsInCalendarSchedule(timeEntries, workDay)
+
+    expect(gaps.length).toBe(2)
+
+    expect(gaps).toStrictEqual([{ start: new Date('2022-01-01 09:00'), end: new Date('2022-01-01 10:30') }, { start: new Date('2022-01-01 11:00'), end: new Date('2022-01-01 17:00' )}])
   })
 
  test('getGapsInSchedule', () => {

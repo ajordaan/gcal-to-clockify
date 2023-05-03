@@ -1,9 +1,8 @@
-import prompts from 'prompts';
 import { getGapsInCalendarSchedule , timeInHoursMinutes } from './Utils.js';
 
 export default class ClockifyUpdater {
 
-  constructor(setup, calendarEvents, workDay) {
+  constructor(setup, calendarEvents, workDay, prompts) {
     this.setup = setup
     this.clockifyAPI = setup.getClockifyAPI()
     this.calendarEvents = calendarEvents
@@ -11,6 +10,7 @@ export default class ClockifyUpdater {
     this.workDay = workDay
     this.activeTasks = this.setup.getClockifyConfig().activeTasks
     this.targetDate = setup.targetDate
+    this.prompts = prompts
   }
 
   get fillInGaps() {
@@ -34,7 +34,9 @@ export default class ClockifyUpdater {
   }
 
   get developmentEvents() {
+    console.log({workday: this.workDay})
     const gaps = getGapsInCalendarSchedule(this.validCalendarEvents, this.workDay)
+    console.log({gaps})
     return gaps.map(gap => { return { summary: 'development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
   }
 
@@ -55,7 +57,7 @@ export default class ClockifyUpdater {
       }
     })
 
-    const responses = await prompts(categorisedEventQuestions);
+    const responses = await this.prompts(categorisedEventQuestions);
 
     return responses
   }
