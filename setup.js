@@ -1,4 +1,3 @@
-import prompts from 'prompts'
 import fs from 'fs'
 import { booleanPrompt, multiSelectPrompt , numberPrompt, textPrompt } from './Prompter.js'
 import ClockifyAPI from './ClockifyAPI.js';
@@ -6,12 +5,13 @@ import GoogleCalendarAPI from './GoogleCalendarAPI.js'
 
 export default class Setup {
 
-  constructor(clockifyApiKey, googleConfig) {
+  constructor(clockifyApiKey, googleConfig, prompts) {
     this.clockifyApiKey = clockifyApiKey
     this.googleConfig = googleConfig
     this.categorisedEventsFilePath = 'config/categorised-events.json'
     this.configFilePath = 'config/clockify.json'
     this.targetDate = null
+    this.prompts = prompts
   }
 
   getClockifyConfig() {
@@ -86,14 +86,15 @@ export default class Setup {
 
   async setFillInScheduleGaps() {
     const fillInGaps = booleanPrompt({ name: 'fillInGaps', message: 'Do you want to automatically fill gaps in your schedule with a Development event?' })
-    const response = await prompts(fillInGaps)
+    const response = await this.prompts(fillInGaps)
     return response.fillInGaps
   }
+
   async setStartAndEndTime() {
     const workDayStartTimePrompt = textPrompt({ name: 'start', message: 'Enter your work day start time in HH:MM (eg 09:00)' }) 
     const workDayEndTimePrompt = textPrompt({ name: 'end', message: 'Enter your work day end time in HH:MM (eg 17:00)' }) 
 
-    const responses = await prompts([workDayStartTimePrompt, workDayEndTimePrompt])
+    const responses = await this.prompts([workDayStartTimePrompt, workDayEndTimePrompt])
 
     console.log({responses})
 
@@ -108,7 +109,6 @@ export default class Setup {
     const projectsWithSelectedTasks = {}
     for (const project of projects) {
       const choices = project.tasks.map(task => ({ title: task.name, value: {id: task.id, projectId: task.projectId, name: task.name, projectName: project.name, workspaceId: task.workspaceId}}))
-
       const prompt = multiSelectPrompt({
         name: project.name,
         message: `Select the tasks you want available for ${project.name}`,
@@ -117,12 +117,9 @@ export default class Setup {
         hint: '- Space to select. Return to submit',
       })
 
-      const response = await prompts(prompt)
-
+      const response = await this.prompts(prompt)
       activeTasks.push(...response[project.name])
     }
-
-    console.log({activeTasks})
 
     return activeTasks
   }
