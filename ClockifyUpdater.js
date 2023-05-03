@@ -34,9 +34,7 @@ export default class ClockifyUpdater {
   }
 
   get developmentEvents() {
-    console.log({workday: this.workDay})
     const gaps = getGapsInCalendarSchedule(this.validCalendarEvents, this.workDay)
-    console.log({gaps})
     return gaps.map(gap => { return { summary: 'development', start: { dateTime: gap.start }, end: { dateTime: gap.end } } })
   }
 
