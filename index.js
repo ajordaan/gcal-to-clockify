@@ -1,6 +1,7 @@
 import prompts from 'prompts';
-import { mainMenu } from './menu';
+import { mainMenu } from './menu.js';
 import Setup from './setup.js'
+import * as dotenv from 'dotenv'
 
 (async () => {
   dotenv.config()
