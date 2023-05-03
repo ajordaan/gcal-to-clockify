@@ -24,7 +24,8 @@ describe('ClockifyUpdater', () => {
   const clockifyConfigStub = {
     "activeTasks":[{"id":"task1","projectId":"project1","name":"Support","projectName":"My Project","workspaceId":"dws123"},{"id":"task2","projectId":"project1","name":"Client Meeting","projectName":"My Project","workspaceId":"dws123"},{"id":"task3","projectId":"project1","name":"Development","projectName":"My Project","workspaceId":"dws123"}],
     "workDay":{"startTime":"09:00","endTime":"17:00"},
-    "fillInGaps":true
+    "fillInGaps":true,
+    "fillTask": 'task3'
   }
 
   const privateKeyStub = "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCUAtG67iszY2iS\njGpqNzziIDGvsoMPsKHBQ1DGz1EWAlsT5n8WL0bjlftLBu5fMXN2eKLhN/cGXaQg\nYn00E6M8uMN92zAjSNY5rEwhNbYTumTcGTrC1IUMhbr2OKpNIghRZJP3DIUk5ro0\nx1syZGKwKLhn5whKsUfcN/q44PGLQvMzrJGswqesjiM9rwvMCN4Tj75RT69R9z8p\n3l90JIuozNb50LYO48DW1Kw44FByGBXyIP8Yhct8KGU75aPW3Bw1ypfD6qp13D3/\nr2qeHBqBTJKOBezTzcRpccVl4SiHOStFeWyTzOzGTH9QUH+ARJpIb+AaPMtP10tE\nDQzmY0/9AgMBAAECggEALblpPUxSgD+XkJ5cSY/i+SBk+Rg2sOQqNGAtVh25uQjl\nRhKQ9DOKvMgap6Tugu3t8411FAqL/6VyDKcgcrQWW63ghsLt7hiURaDaq+/B3fpZ\nKj2JD6NDrwipJ2N+CPIYi7x8kXeGsk2s/J0RqVGlwzHxNfgDcb+uqXOJuw+SzyhX\nW99FKV+vHf+S5JapIGXrwnSwJC8cziKeKfw/q9bAI5UXnC1dNT6lvoRmTYk9CIjW\nlCd7gkqz9RyQtR0himla7cl3KPhdJ6+WzNx4XchCJVcamD7CkHqD1UxAwCC9/PrM\nMuvYza0kX0wYBlY8WYRRrRmzLYEXioKZc5Py6a6VAQKBgQDpuouTa4HSeSGJjLhQ\nyKRlG2o3Tx/9kKoUgArzGegUjNp34KPoZSHNTrBVQN0o8RCQol7btE6Tw7aEmnIa\n+uq1jnPqKD3G/juVD8Os0xesdX/0WZ0ukuGxXLU5tpKhjFWrFKcOLdZqSPSCwWhH\nSZqJn6JubwrZy3lxupvuqzQHIQKBgQCiHVJx/ofDGRb18XtGA2EU8mADXllBwoXI\n6fqMsikYHqMZ0NyRvvObNUSshalYl72P0besQhKsBtV+L1MHsGJTEMnbegwMnJ2r\nb2LppBB+XM8sSUfbeNKHVKg87iGC7/Qzq39zJClqby0N85q5vyPq3Bis1GMq9Apy\ngenQ5vqZXQKBgQC3T594l7DSKj6rarqEYVjOE5pSlrQ4YuWB/oqX75GdzHrr2juz\nYN4J79VMh/rsyWR8i1xqZBfcvHrBtYAYuQKsMnWnCLirAWoplpuZSFYg5GbedgpZ\nJMnuGQ/pm8+U9EOcUi5TaI/p/B4JDzeB8bBKj/ENO/n+px8wm3MA1TWRAQKBgQCd\nkMZbSbsGo1IvxX+9cvde9pzfaUpzoe+KcfA148wRR2XbZ6eaePApQML4tAj+tK1o\nJbvRz356eUH0HWckKAnJFp47lgo0D90njWGkGPR2/RnXv3n6FRr6sgu6/PDRZQwD\nVILRlKo0as5tqwIN23u7gCTzhpLEYuHsndx2UKnteQKBgQDI8+a1lGlCBDE+LQb3\nvgoeGe69yfRKV39Hf+XVuVhyfDpJwglSHHjxcO3CCmS6MfEj1Uo/e9d7lFJW7m59\nfnV59nxgBGLFlHiLfJIuu8UZDNceacBQYYYDd3Kltf88MspcuLpVq84Q25ygqyWH\ngHMrp2RMvYvmvxu8rLHLOQj4BA==\n-----END PRIVATE KEY-----\n"
@@ -148,4 +149,23 @@ describe('ClockifyUpdater', () => {
     expect(logSpy).toHaveBeenCalledWith('Added a Development entry (11:30 - 17:00)' )
 
   })
+
+  // test('Update Clockify - custom entry', async() => {
+  //
+  //   const clockify = nock('https://api.clockify.me/api/v1')
+  //   clockify.get('/user').reply(200, clockifyUserInfoStub)
+  //   clockify.get(uri => uri.includes('/time-entries?')).reply(200, [])
+  //   clockify.post(`/workspaces/${clockifyUserInfoStub.defaultWorkspace}/time-entries`).reply(200)
+  //
+  //   prompts.inject([ 'custom-entry', 'task2', '2023-02-02', '12:00', '13:30' ]);
+  //
+  //   const setup = mockSetupClass(new Date())
+  //
+  //   const logSpy = jest.spyOn(console, 'log');
+  //
+  //   await mainMenu(prompts, setup)
+  //
+  //   expect(logSpy).toHaveBeenCalledWith('Added a custom Client Meeting entry (12:00 - 13:30)' )
+  //
+  // })
 })

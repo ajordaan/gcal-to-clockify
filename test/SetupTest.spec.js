@@ -22,7 +22,8 @@ describe('Setup', () => {
   const clockifyConfigStub = {
     "activeTasks":[{"id":"task1","projectId":"project1","name":"Support","projectName":"My Project","workspaceId":"dws123"},{"id":"task2","projectId":"project1","name":"Client Meeting","projectName":"My Project","workspaceId":"dws123"},{"id":"task3","projectId":"project1","name":"Development","projectName":"My Project","workspaceId":"dws123"}],
     "workDay":{"startTime":"09:00","endTime":"17:00"},
-    "fillInGaps":true
+    "fillInGaps":true,
+    "fillTask": "task3"
   }
 
   test('Run Setup', async() => {
@@ -34,7 +35,7 @@ describe('Setup', () => {
     clockify.get('/workspaces/dws123/projects').reply(200, [{id: 'project1', name: 'My Project' }])
     clockify.get('/workspaces/dws123/projects/project1/tasks').reply(200, clockifyConfigStub.activeTasks)
 
-    prompts.inject([ clockifyConfigStub.activeTasks, '09:00', '17:00', true]);
+    prompts.inject([ clockifyConfigStub.activeTasks, '09:00', '17:00', true, 'task3']);
 
     const setup = new Setup('clockify_api_key', { GOOGLE_PRIVATE_KEY: '', GOOGLE_CLIENT_EMAIL: '', GOOGLE_PROJECT_NUMBER: '', GOOGLE_CALENDAR_ID: '' }, prompts)
 

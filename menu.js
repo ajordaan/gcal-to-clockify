@@ -1,4 +1,4 @@
-import { getDateFromWeekDayName, getStartOfWeek, title } from './Utils.js'
+import { getDateFromWeekDayName, getStartOfWeek, title, timeInHoursMinutes } from './Utils.js'
 import { mainMenuPrompts, textPrompt } from './Prompter.js'
 import { combineTimeAndDate } from './Utils.js'
 import ClockifyUpdater from './ClockifyUpdater.js';
@@ -42,7 +42,7 @@ const statusOfCurrentWeek = async(setup) => {
   }
 }
 
-const customTimeEntry = async(setup) => {
+const customTimeEntry = async(setup, prompts) => {
 
   const clockifyAPI = setup.getClockifyAPI()
   const clockifyTasks = setup.getClockifyConfig().activeTasks
@@ -56,15 +56,22 @@ const customTimeEntry = async(setup) => {
     message: 'What category is this entry?',
     choices: taskTypeChoices
   }
-
+  
+  const entryDatePrompt = textPrompt({ name: 'date', message: 'Entry date in YYYY-MM-DD (leave blank for today)' }) 
   const entryStartTimePrompt = textPrompt({ name: 'start', message: 'Entry start time in HH:MM (eg 09:00)' }) 
   const entryEndTimePrompt = textPrompt({ name: 'end', message: 'Entry end time in HH:MM (eg 17:00)' }) 
 
-  const response = await prompts([taskTypePrompt, entryStartTimePrompt, entryEndTimePrompt]);
+  const response = await prompts([taskTypePrompt, entryDatePrompt, entryStartTimePrompt, entryEndTimePrompt]);
 
   console.log({response})
 
-  // await clockifyAPI.addTimeEntry(task, new Date(startTime).toISOString(), new Date(endTime).toISOString())
+  const entryDate = response.date ? new Date(response.date) : new Date() 
+
+  const selectedTask = clockifyTasks.find(task => task.id == response.taskType)
+  const times = combineTimeAndDate(entryDate, response.start, response.end)
+  await clockifyAPI.addTimeEntry(selectedTask,times.start.toISOString(), times.end.toISOString())
+  
+  console.log(`Added a custom ${task.name} entry (${timeInHoursMinutes(times.start)} - ${timeInHoursMinutes(times.end)})`)
 }
 
 export const mainMenu = async(prompts, setup) => {
@@ -93,9 +100,9 @@ export const mainMenu = async(prompts, setup) => {
     case 'status':
       await statusOfCurrentWeek(setup)
       break
-    case 'custom-entry':
-      await customTimeEntry(setup)
-      break
+    // case 'custom-entry':
+    //   await customTimeEntry(setup, prompts)
+    //   break
     case 'setup':
       setup.runSetup()
       break
