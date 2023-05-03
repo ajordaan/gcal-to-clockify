@@ -29,9 +29,8 @@ The script works by fetching events from your calendar, asking you to categorise
 
 ## Limitations
 * Google calendar events must have you as an attendee, or as the creator of the event. Other event types (Like an out of office event) might not work correctly
-* The gaps in your schedule are filled with a single task type
-  This won't work for users who are on multiple projects.
-  You can still categorise your calendar tasks, but your schedule gaps will have to be manually filled in
+* The gaps in your schedule are filled with a single task type. This won't work for users who are on multiple projects.
+  You can still categorise your calendar tasks, but your schedule gaps will have to be manually filled in.
 
 ## TODO
 * Add the ability to upload custom time entries
