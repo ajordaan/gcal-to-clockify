@@ -38,6 +38,17 @@ export const multiSelectPrompt = ({ name, message, choices, maxSelection, hint }
   }
 }
 
+export const selectPrompt = ({ name, message, choices, hint }) => {
+  return {
+    type: 'select',
+    name,
+    message,
+    choices,
+    hint,
+    instructions: false
+  }
+}
+
 export const textPrompt = ({name, message, initial}) => {
   return {
     type: 'text',

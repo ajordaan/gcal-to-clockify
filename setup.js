@@ -79,15 +79,29 @@ export default class Setup {
     config.workDay.startTime = workDayTimes.start
     config.workDay.endTime = workDayTimes.end
     config.fillInGaps = await this.setFillInScheduleGaps()
+    if(config.fillInGaps) {
+      config.fillTask = await this.setFillTask(config.activeTasks)
+    }
     this.updateConfig(config)
     console.log('Setup complete!')
 
   }
 
   async setFillInScheduleGaps() {
-    const fillInGaps = booleanPrompt({ name: 'fillInGaps', message: 'Do you want to automatically fill gaps in your schedule with a Development event?' })
+    const fillInGaps = booleanPrompt({ name: 'fillInGaps', message: 'Do you want to automatically fill gaps in your schedule with a task?' })
     const response = await this.prompts(fillInGaps)
     return response.fillInGaps
+  }
+
+  async setFillTask(tasks) {
+    const choices = tasks.map(task => ({ title: task.name, value: task.id}))
+    const prompt = multiSelectPrompt({
+      name: 'fillTask',
+      message: 'Choose what task you want to fill the gaps in your schedule with',
+      choices,
+    })
+    const response = await this.prompts(prompt)
+    return response.fillTask
   }
 
   async setStartAndEndTime() {

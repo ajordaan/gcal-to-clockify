@@ -17,6 +17,10 @@ export default class ClockifyUpdater {
     return this.setup.getClockifyConfig().fillInGaps
   }
 
+  get fillTaskId() {
+    return this.setup.getClockifyConfig().fillTask
+  }
+
   get previouslyCategorisedEvents() {
    return this.setup.getPreviouslyCategorisedEvents()
   }
@@ -110,7 +114,7 @@ export default class ClockifyUpdater {
       }
 
       if(this.fillInGaps) {
-        const developmentTask = this.activeTasks.find(task => task.name === 'Development')
+        const developmentTask = this.activeTasks.find(task => task.id === this.fillTaskId)
         for(const devEvent of this.developmentEvents) {
           await this.addTimeEntry(developmentTask, devEvent, `Added a ${developmentTask.name} entry (${timeInHoursMinutes(new Date(devEvent.start.dateTime))} - ${timeInHoursMinutes(new Date(devEvent.end.dateTime))})`)
         }
