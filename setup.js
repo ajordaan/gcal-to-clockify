@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { booleanPrompt, multiSelectPrompt , numberPrompt, textPrompt } from './Prompter.js'
+import { booleanPrompt, multiSelectPrompt , selectPrompt, numberPrompt, textPrompt } from './Prompter.js'
 import ClockifyAPI from './ClockifyAPI.js';
 import GoogleCalendarAPI from './GoogleCalendarAPI.js'
 
@@ -95,7 +95,7 @@ export default class Setup {
 
   async setFillTask(tasks) {
     const choices = tasks.map(task => ({ title: task.name, value: task.id}))
-    const prompt = multiSelectPrompt({
+    const prompt = selectPrompt({
       name: 'fillTask',
       message: 'Choose what task you want to fill the gaps in your schedule with',
       choices,
@@ -109,8 +109,6 @@ export default class Setup {
     const workDayEndTimePrompt = textPrompt({ name: 'end', message: 'Enter your work day end time in HH:MM (eg 17:00)' }) 
 
     const responses = await this.prompts([workDayStartTimePrompt, workDayEndTimePrompt])
-
-    console.log({responses})
 
     return responses
   }
